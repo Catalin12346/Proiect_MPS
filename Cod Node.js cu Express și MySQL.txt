@@ -1,0 +1,51 @@
+const express = require('express');
+const bodyParser = require('body-parser');
+const mysql = require('mysql');
+
+const app = express();
+app.use(bodyParser.json());
+
+// Conexiune baza de date
+const db = mysql.createConnection({
+    host: 'localhost',
+    user: 'root',
+    password: '',
+    database: 'suport_varstnici'
+});
+
+db.connect(err => {
+    if (err) throw err;
+    console.log('Conexiune DB reușită!');
+});
+
+// Endpoint pentru autentificare
+app.post('/login', (req, res) => {
+    const { email, password } = req.body;
+    const query = 'SELECT * FROM users WHERE email = ? AND password = ?';
+    db.query(query, [email, password], (err, results) => {
+        if (err) {
+            res.status(500).send('Eroare server.');
+        } else if (results.length > 0) {
+            res.status(200).send('Autentificare reușită.');
+        } else {
+            res.status(401).send('Credentiale greșite.');
+        }
+    });
+});
+
+// Endpoint pentru crearea reminderelor
+app.post('/reminder', (req, res) => {
+    const { userId, message, remindAt } = req.body;
+    const query = 'INSERT INTO reminders (user_id, message, remind_at) VALUES (?, ?, ?)';
+    db.query(query, [userId, message, remindAt], (err, result) => {
+        if (err) {
+            res.status(500).send('Eroare server.');
+        } else {
+            res.status(201).send('Reminder creat.');
+        }
+    });
+});
+
+app.listen(3000, () => {
+    console.log('Serverul rulează pe portul 3000.');
+});

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aplicație Suport</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>Platforma Suport pentru Persoane în Vârstă</h1>
+    </header>
+    <main>
+        <section id="login">
+            <h2>Autentificare</h2>
+            <form id="loginForm">
+                <label for="email">Email:</label>
+                <input type="email" id="email" required>
+
+                <label for="password">Parolă:</label>
+                <input type="password" id="password" required>
+
+                <button type="submit">Login</button>
+            </form>
+        </section>
+        <section id="reminder" style="display:none;">
+            <h2>Setează Reminder</h2>
+            <form id="reminderForm">
+                <label for="message">Mesaj:</label>
+                <input type="text" id="message" required>
+
+                <label for="remindAt">Ora:</label>
+                <input type="datetime-local" id="remindAt" required>
+
+                <button type="submit">Setează</button>
+            </form>
+        </section>
+    </main>
+    <script src="app.js"></script>
+</body>
+</html>
