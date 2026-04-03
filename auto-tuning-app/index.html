@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Auto Tuning - Editor Binar ECU</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+    <!-- Header -->
+    <header class="app-header">
+        <div class="logo">
+            <h1>🏎️ Auto Tuning - Editor Binar ECU</h1>
+            <span class="subtitle">Manipulare fișiere binare pentru tuning auto</span>
+        </div>
+        <div class="header-controls">
+            <input type="file" id="file-input" accept=".bin,.rom,.hex,.ecu,.ori,.mod,.dat" style="display:none">
+            <button id="load-file-btn" class="btn btn-primary">📂 Încarcă Fișier</button>
+            <button id="save-file-btn" class="btn btn-success" disabled>💾 Salvează</button>
+        </div>
+    </header>
+
+    <!-- Navigation Tabs -->
+    <nav class="nav-tabs">
+        <button class="nav-tab active" data-tab="hex-editor">🔧 Editor Hex</button>
+        <button class="nav-tab" data-tab="map-viewer">📊 Vizualizare Hărți</button>
+        <button class="nav-tab" data-tab="search-replace">🔍 Căutare &amp; Înlocuire</button>
+        <button class="nav-tab" data-tab="checksum">🔢 Checksum</button>
+        <button class="nav-tab" data-tab="diff">⚖️ Comparare</button>
+    </nav>
+
+    <!-- File Status Bar -->
+    <div class="status-bar">
+        <div id="file-status">
+            <span class="status-item">Niciun fișier încărcat</span>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main>
+
+        <!-- ==================== HEX EDITOR TAB ==================== -->
+        <div id="hex-editor" class="tab-content active">
+
+            <!-- Drop Zone (visible when no file loaded) -->
+            <div id="drop-zone" class="drop-zone">
+                <div class="drop-icon">📁</div>
+                <h2>Trageți un fișier binar aici</h2>
+                <p>sau apăsați butonul <strong>Încarcă Fișier</strong> din meniu</p>
+                <p style="margin-top:12px;font-size:0.85rem;color:var(--text-muted)">
+                    Formate acceptate: .bin, .rom, .hex, .ecu, .ori, .mod, .dat
+                </p>
+            </div>
+
+            <!-- Editor Area (visible after file loaded) -->
+            <div id="editor-area">
+
+                <!-- Toolbar -->
+                <div class="hex-toolbar">
+                    <div class="toolbar-group">
+                        <button id="hex-prev" class="btn btn-sm" disabled>◀ Anterior</button>
+                        <span id="hex-page-info">Pagina 0 / 0</span>
+                        <button id="hex-next" class="btn btn-sm" disabled>Următor ▶</button>
+                    </div>
+                    <div class="toolbar-group">
+                        <button id="hex-undo" class="btn btn-sm">↩ Undo</button>
+                        <button id="hex-redo" class="btn btn-sm">↪ Redo</button>
+                    </div>
+                    <div class="toolbar-group">
+                        <label style="color:var(--text-secondary);font-size:0.85rem;">Salt la offset (hex):</label>
+                        <input type="text" id="goto-offset-input" placeholder="ex: 1A00">
+                        <button id="goto-offset-btn" class="btn btn-sm">Go</button>
+                    </div>
+                </div>
+
+                <!-- Hex Content -->
+                <div id="hex-content"></div>
+
+                <!-- Edit Panel -->
+                <div id="edit-panel">
+                    <h4>✏️ Editare Byte</h4>
+                    <div class="edit-field">
+                        <label>Offset:</label>
+                        <span id="edit-offset" class="mono">-</span>
+                    </div>
+                    <div class="edit-field">
+                        <label>Valoare curentă:</label>
+                        <span id="edit-current-value" class="mono">-</span>
+                    </div>
+                    <div class="edit-field">
+                        <label>Valoare nouă (hex):</label>
+                        <input type="text" id="edit-new-value" maxlength="2" placeholder="FF">
+                    </div>
+                    <div class="edit-buttons">
+                        <button id="edit-apply" class="btn btn-primary btn-sm">Aplică</button>
+                        <button id="edit-cancel" class="btn btn-sm">Anulează</button>
+                    </div>
+                </div>
+
+                <!-- Info Bar -->
+                <div id="hex-info"></div>
+
+                <!-- Shortcuts Info -->
+                <div class="shortcuts-info">
+                    <h3>⌨️ Scurtături Tastatură</h3>
+                    <div class="shortcuts-grid">
+                        <div class="shortcut-item"><kbd>Ctrl+O</kbd> <span>Deschide fișier</span></div>
+                        <div class="shortcut-item"><kbd>Ctrl+S</kbd> <span>Salvează fișier</span></div>
+                        <div class="shortcut-item"><kbd>Ctrl+Z</kbd> <span>Undo</span></div>
+                        <div class="shortcut-item"><kbd>Ctrl+Y</kbd> <span>Redo</span></div>
+                        <div class="shortcut-item"><kbd>Ctrl+G</kbd> <span>Salt la offset</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ==================== MAP VIEWER TAB ==================== -->
+        <div id="map-viewer" class="tab-content">
+            <div class="map-config">
+                <h3>📊 Configurare Hartă ECU</h3>
+                <div class="map-config-grid">
+                    <div class="map-config-field">
+                        <label for="map-name">Nume hartă:</label>
+                        <input type="text" id="map-name" value="Hartă Injecție" placeholder="ex: Fuel Map">
+                    </div>
+                    <div class="map-config-field">
+                        <label for="map-offset">Offset start (hex):</label>
+                        <input type="text" id="map-offset" value="0" placeholder="ex: 1000">
+                    </div>
+                    <div class="map-config-field">
+                        <label for="map-rows">Număr rânduri:</label>
+                        <input type="number" id="map-rows" value="16" min="1" max="64">
+                    </div>
+                    <div class="map-config-field">
+                        <label for="map-cols">Număr coloane:</label>
+                        <input type="number" id="map-cols" value="16" min="1" max="64">
+                    </div>
+                    <div class="map-config-field">
+                        <label for="map-data-type">Tip date:</label>
+                        <select id="map-data-type">
+                            <option value="uint8">8-bit (uint8)</option>
+                            <option value="uint16le">16-bit Little Endian</option>
+                            <option value="uint16be">16-bit Big Endian</option>
+                        </select>
+                    </div>
+                    <div class="map-config-field">
+                        <label for="map-multiplier">Multiplicator:</label>
+                        <input type="number" id="map-multiplier" value="1" step="0.01">
+                    </div>
+                    <div class="map-config-field">
+                        <label for="map-unit">Unitate:</label>
+                        <input type="text" id="map-unit" value="" placeholder="ex: ms, °, %">
+                    </div>
+                </div>
+                <div style="margin-top:12px;">
+                    <button id="map-load-btn" class="btn btn-primary">📊 Încarcă Hartă</button>
+                </div>
+            </div>
+            <div id="map-content">
+                <p class="placeholder">Configurați parametrii și apăsați „Încarcă Hartă" pentru a vizualiza datele.</p>
+            </div>
+        </div>
+
+        <!-- ==================== SEARCH & REPLACE TAB ==================== -->
+        <div id="search-replace" class="tab-content">
+            <div class="search-panel">
+                <h3>🔍 Căutare și Înlocuire Pattern Hex</h3>
+                <div class="search-row">
+                    <label>Căutare:</label>
+                    <input type="text" id="search-pattern" placeholder="ex: FF 00 AB sau FF00AB">
+                </div>
+                <div class="search-row">
+                    <label>Înlocuire:</label>
+                    <input type="text" id="replace-pattern" placeholder="ex: FF 01 AC">
+                </div>
+                <div class="search-buttons">
+                    <button id="search-btn" class="btn btn-primary">🔍 Caută</button>
+                    <button id="replace-btn" class="btn">🔄 Înlocuiește Tot</button>
+                </div>
+                <div id="search-results"></div>
+            </div>
+        </div>
+
+        <!-- ==================== CHECKSUM TAB ==================== -->
+        <div id="checksum" class="tab-content">
+            <div id="checksum-content">
+                <p class="placeholder">Încărcați un fișier binar pentru a calcula checksum-uri.</p>
+            </div>
+        </div>
+
+        <!-- ==================== DIFF TAB ==================== -->
+        <div id="diff" class="tab-content">
+            <div id="diff-content">
+                <p class="placeholder">Încărcați două fișiere pentru comparare.</p>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Scripts -->
+    <script src="js/binary-utils.js"></script>
+    <script src="js/hex-editor.js"></script>
+    <script src="js/map-viewer.js"></script>
+    <script src="js/checksum.js"></script>
+    <script src="js/diff.js"></script>
+    <script src="js/app.js"></script>
+
+</body>
+</html>

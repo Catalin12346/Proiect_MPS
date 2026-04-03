@@ -1,0 +1,957 @@
+/* ============================================
+   Auto Tuning Binary Editor - Stylesheet
+   Professional dark theme for ECU tuning
+   ============================================ */
+
+/* === CSS Variables === */
+:root {
+    --bg-primary: #1a1a2e;
+    --bg-secondary: #16213e;
+    --bg-tertiary: #0f3460;
+    --bg-input: #1e2a45;
+    --bg-hover: #253555;
+    --text-primary: #e0e0e0;
+    --text-secondary: #a0a0b0;
+    --text-muted: #707080;
+    --accent: #e94560;
+    --accent-hover: #ff6b81;
+    --accent-blue: #4a9eff;
+    --accent-green: #4caf50;
+    --accent-orange: #ff9800;
+    --border-color: #2a3a5a;
+    --shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    --radius: 6px;
+    --font-mono: 'Consolas', 'Monaco', 'Courier New', monospace;
+    --font-ui: 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+}
+
+/* === Reset & Base === */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    font-size: 14px;
+}
+
+body {
+    font-family: var(--font-ui);
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+/* === Header === */
+.app-header {
+    background: linear-gradient(135deg, var(--bg-secondary), var(--bg-tertiary));
+    border-bottom: 2px solid var(--accent);
+    padding: 12px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: var(--shadow);
+}
+
+.app-header .logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.app-header .logo h1 {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--accent);
+    letter-spacing: 1px;
+}
+
+.app-header .logo .subtitle {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+}
+
+.header-controls {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* === Buttons === */
+.btn {
+    background-color: var(--bg-tertiary);
+    color: var(--text-primary);
+    border: 1px solid var(--border-color);
+    padding: 8px 16px;
+    border-radius: var(--radius);
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-family: var(--font-ui);
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.btn:hover:not(:disabled) {
+    background-color: var(--bg-hover);
+    border-color: var(--accent-blue);
+}
+
+.btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+.btn-primary {
+    background-color: var(--accent);
+    border-color: var(--accent);
+    color: #fff;
+    font-weight: 600;
+}
+
+.btn-primary:hover:not(:disabled) {
+    background-color: var(--accent-hover);
+    border-color: var(--accent-hover);
+}
+
+.btn-success {
+    background-color: var(--accent-green);
+    border-color: var(--accent-green);
+    color: #fff;
+}
+
+.btn-sm {
+    padding: 4px 10px;
+    font-size: 0.8rem;
+}
+
+/* === Navigation Tabs === */
+.nav-tabs {
+    background-color: var(--bg-secondary);
+    display: flex;
+    border-bottom: 1px solid var(--border-color);
+    padding: 0 16px;
+    overflow-x: auto;
+}
+
+.nav-tab {
+    padding: 12px 20px;
+    color: var(--text-secondary);
+    cursor: pointer;
+    border: none;
+    background: none;
+    font-size: 0.95rem;
+    font-family: var(--font-ui);
+    border-bottom: 3px solid transparent;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+}
+
+.nav-tab:hover {
+    color: var(--text-primary);
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.nav-tab.active {
+    color: var(--accent);
+    border-bottom-color: var(--accent);
+    font-weight: 600;
+}
+
+/* === File Status Bar === */
+.status-bar {
+    background-color: var(--bg-secondary);
+    border-bottom: 1px solid var(--border-color);
+    padding: 6px 24px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+}
+
+.status-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+/* === Tab Content === */
+.tab-content {
+    display: none;
+    padding: 16px 24px;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+/* === Drop Zone === */
+.drop-zone {
+    border: 2px dashed var(--border-color);
+    border-radius: var(--radius);
+    padding: 60px 40px;
+    text-align: center;
+    color: var(--text-secondary);
+    transition: all 0.3s ease;
+    margin: 40px auto;
+    max-width: 600px;
+}
+
+.drop-zone:hover,
+.drop-zone.drag-over {
+    border-color: var(--accent);
+    background-color: rgba(233, 69, 96, 0.1);
+    color: var(--text-primary);
+}
+
+.drop-zone .drop-icon {
+    font-size: 3rem;
+    margin-bottom: 16px;
+}
+
+.drop-zone h2 {
+    font-size: 1.3rem;
+    margin-bottom: 8px;
+}
+
+.drop-zone p {
+    font-size: 0.95rem;
+    margin-bottom: 4px;
+}
+
+/* === Editor Area === */
+#editor-area {
+    display: none;
+    flex-direction: column;
+    gap: 12px;
+}
+
+/* === Hex Editor === */
+.hex-toolbar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    padding: 8px 0;
+}
+
+.hex-toolbar .toolbar-group {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 0 8px;
+    border-right: 1px solid var(--border-color);
+}
+
+.hex-toolbar .toolbar-group:last-child {
+    border-right: none;
+}
+
+.hex-toolbar input[type="text"] {
+    background-color: var(--bg-input);
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+    padding: 6px 10px;
+    border-radius: var(--radius);
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    width: 120px;
+}
+
+.hex-toolbar input[type="text"]:focus {
+    outline: none;
+    border-color: var(--accent-blue);
+}
+
+#hex-content {
+    background-color: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius);
+    padding: 12px;
+    overflow: auto;
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    line-height: 1.6;
+    max-height: 60vh;
+}
+
+.hex-row {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    white-space: nowrap;
+}
+
+.hex-row:hover {
+    background-color: rgba(255, 255, 255, 0.03);
+}
+
+.hex-addr {
+    color: var(--accent-blue);
+    margin-right: 16px;
+    user-select: none;
+    min-width: 72px;
+}
+
+.hex-bytes {
+    margin-right: 16px;
+    display: inline;
+}
+
+.hex-byte {
+    cursor: pointer;
+    padding: 1px 3px;
+    border-radius: 2px;
+    transition: background-color 0.15s;
+    margin: 0 1px;
+}
+
+.hex-byte:hover {
+    background-color: var(--bg-hover);
+}
+
+.hex-byte.selected {
+    background-color: var(--accent);
+    color: #fff;
+}
+
+.hex-byte.modified {
+    color: var(--accent-orange);
+    font-weight: bold;
+}
+
+.hex-byte.empty {
+    cursor: default;
+}
+
+.hex-separator {
+    margin: 0 4px;
+}
+
+.hex-ascii {
+    color: var(--accent-green);
+    letter-spacing: 1px;
+    border-left: 1px solid var(--border-color);
+    padding-left: 12px;
+}
+
+.hex-ascii .hex-byte {
+    letter-spacing: 0;
+}
+
+.hex-navigation {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 8px 0;
+}
+
+#hex-page-info {
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+    min-width: 120px;
+    text-align: center;
+}
+
+#hex-info {
+    display: flex;
+    gap: 20px;
+    padding: 8px 0;
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+}
+
+/* === Edit Panel === */
+#edit-panel {
+    display: none;
+    background-color: var(--bg-secondary);
+    border: 1px solid var(--accent);
+    border-radius: var(--radius);
+    padding: 16px;
+    margin: 8px 0;
+    box-shadow: var(--shadow);
+    max-width: 400px;
+}
+
+#edit-panel h4 {
+    margin-bottom: 12px;
+    color: var(--accent);
+}
+
+.edit-field {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+    font-size: 0.9rem;
+}
+
+.edit-field label {
+    min-width: 120px;
+    color: var(--text-secondary);
+}
+
+.edit-field input {
+    background-color: var(--bg-input);
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+    padding: 6px 10px;
+    border-radius: var(--radius);
+    font-family: var(--font-mono);
+    font-size: 0.9rem;
+    width: 100px;
+}
+
+.edit-field input:focus {
+    outline: none;
+    border-color: var(--accent);
+}
+
+.edit-buttons {
+    display: flex;
+    gap: 8px;
+    margin-top: 12px;
+}
+
+/* === Search Panel === */
+.search-panel {
+    background-color: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius);
+    padding: 16px;
+    margin: 12px 0;
+}
+
+.search-panel h3 {
+    margin-bottom: 12px;
+    font-size: 1rem;
+    color: var(--accent);
+}
+
+.search-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+}
+
+.search-row label {
+    min-width: 80px;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}
+
+.search-row input {
+    background-color: var(--bg-input);
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+    padding: 6px 12px;
+    border-radius: var(--radius);
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    flex: 1;
+    max-width: 300px;
+}
+
+.search-row input:focus {
+    outline: none;
+    border-color: var(--accent-blue);
+}
+
+.search-buttons {
+    display: flex;
+    gap: 8px;
+    margin-top: 8px;
+}
+
+#search-results {
+    margin-top: 12px;
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.search-results-list {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+}
+
+.search-results-list li {
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+}
+
+.search-result-link {
+    color: var(--accent-blue);
+    text-decoration: none;
+    padding: 2px 6px;
+    border-radius: 3px;
+    background-color: rgba(74, 158, 255, 0.1);
+}
+
+.search-result-link:hover {
+    background-color: rgba(74, 158, 255, 0.2);
+    text-decoration: underline;
+}
+
+.no-results {
+    color: var(--text-muted);
+    font-style: italic;
+}
+
+/* === Map Viewer === */
+.map-config {
+    background-color: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius);
+    padding: 16px;
+    margin-bottom: 16px;
+}
+
+.map-config h3 {
+    margin-bottom: 12px;
+    color: var(--accent);
+    font-size: 1rem;
+}
+
+.map-config-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 12px;
+}
+
+.map-config-field {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.map-config-field label {
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+}
+
+.map-config-field input,
+.map-config-field select {
+    background-color: var(--bg-input);
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+    padding: 6px 10px;
+    border-radius: var(--radius);
+    font-size: 0.85rem;
+    font-family: var(--font-ui);
+}
+
+.map-config-field input:focus,
+.map-config-field select:focus {
+    outline: none;
+    border-color: var(--accent-blue);
+}
+
+.map-config-field select {
+    cursor: pointer;
+}
+
+.map-config-field select option {
+    background-color: var(--bg-secondary);
+}
+
+.map-info {
+    display: flex;
+    gap: 16px;
+    padding: 8px 0;
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    flex-wrap: wrap;
+}
+
+.map-table-wrapper {
+    overflow: auto;
+    max-height: 60vh;
+    margin-top: 12px;
+}
+
+.map-table {
+    border-collapse: collapse;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+}
+
+.map-table th {
+    background-color: var(--bg-tertiary);
+    color: var(--text-secondary);
+    padding: 4px 8px;
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    font-weight: 600;
+}
+
+.map-table th:first-child {
+    position: sticky;
+    left: 0;
+    z-index: 2;
+}
+
+.map-table tbody th {
+    position: sticky;
+    left: 0;
+    z-index: 1;
+}
+
+.map-cell {
+    padding: 4px 6px;
+    text-align: center;
+    cursor: pointer;
+    transition: opacity 0.15s;
+    min-width: 40px;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+.map-cell:hover {
+    opacity: 0.8;
+    outline: 2px solid var(--text-primary);
+}
+
+/* Map Legend */
+.map-legend {
+    margin-top: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+}
+
+.legend-bar {
+    width: 300px;
+    height: 16px;
+    border-radius: 8px;
+    background: linear-gradient(to right,
+        rgb(0, 0, 255),
+        rgb(0, 128, 128),
+        rgb(0, 255, 0),
+        rgb(128, 128, 0),
+        rgb(255, 0, 0));
+}
+
+.legend-labels {
+    display: flex;
+    justify-content: space-between;
+    width: 300px;
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+}
+
+/* === Checksum Tool === */
+.checksum-table {
+    border-collapse: collapse;
+    margin-top: 8px;
+    width: 100%;
+    max-width: 500px;
+}
+
+.checksum-table th,
+.checksum-table td {
+    border: 1px solid var(--border-color);
+    padding: 8px 12px;
+    text-align: left;
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+}
+
+.checksum-table th {
+    background-color: var(--bg-tertiary);
+    color: var(--text-secondary);
+    font-weight: 600;
+}
+
+.checksum-table td {
+    background-color: var(--bg-secondary);
+}
+
+.checksum-custom {
+    display: flex;
+    align-items: flex-end;
+    gap: 12px;
+    margin: 12px 0;
+    flex-wrap: wrap;
+}
+
+.checksum-custom label {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+}
+
+.checksum-custom input {
+    background-color: var(--bg-input);
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+    padding: 6px 10px;
+    border-radius: var(--radius);
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    width: 140px;
+}
+
+.checksum-custom input:focus {
+    outline: none;
+    border-color: var(--accent-blue);
+}
+
+/* === Diff Tool === */
+.diff-upload-area {
+    margin-bottom: 16px;
+}
+
+.diff-file-inputs {
+    display: flex;
+    gap: 20px;
+    margin: 16px 0;
+    flex-wrap: wrap;
+}
+
+.diff-file-box {
+    background-color: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius);
+    padding: 16px;
+    flex: 1;
+    min-width: 250px;
+}
+
+.diff-file-box label {
+    display: block;
+    margin-bottom: 8px;
+    color: var(--text-secondary);
+    font-weight: 600;
+}
+
+.diff-file-box input[type="file"] {
+    color: var(--text-primary);
+    font-size: 0.85rem;
+}
+
+.file-info {
+    display: block;
+    margin-top: 8px;
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    font-family: var(--font-mono);
+}
+
+.diff-stats {
+    margin-bottom: 16px;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 8px;
+    margin-top: 12px;
+}
+
+.stat-item {
+    background-color: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius);
+    padding: 10px 14px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.stat-label {
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+}
+
+.stat-value {
+    font-family: var(--font-mono);
+    font-weight: 600;
+}
+
+.diff-identical {
+    background-color: rgba(76, 175, 80, 0.1);
+    border: 1px solid var(--accent-green);
+    border-radius: var(--radius);
+    padding: 20px;
+    text-align: center;
+    font-size: 1.1rem;
+    color: var(--accent-green);
+}
+
+.diff-table-wrapper {
+    overflow: auto;
+    max-height: 60vh;
+}
+
+.diff-table {
+    border-collapse: collapse;
+    width: 100%;
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    margin-top: 12px;
+}
+
+.diff-table th,
+.diff-table td {
+    border: 1px solid var(--border-color);
+    padding: 6px 10px;
+    text-align: center;
+}
+
+.diff-table th {
+    background-color: var(--bg-tertiary);
+    color: var(--text-secondary);
+    position: sticky;
+    top: 0;
+    font-weight: 600;
+}
+
+.diff-orig {
+    color: var(--accent);
+}
+
+.diff-mod {
+    color: var(--accent-green);
+}
+
+.diff-truncated {
+    margin-top: 12px;
+    color: var(--text-muted);
+    font-style: italic;
+    text-align: center;
+}
+
+.mono {
+    font-family: var(--font-mono);
+}
+
+/* === Utility Classes === */
+.text-warning {
+    color: var(--accent-orange) !important;
+}
+
+.text-up {
+    color: var(--accent-green);
+}
+
+.text-down {
+    color: var(--accent);
+}
+
+.error {
+    color: var(--accent);
+    font-weight: 600;
+}
+
+.placeholder {
+    color: var(--text-muted);
+    font-style: italic;
+    text-align: center;
+    padding: 40px;
+}
+
+h3 {
+    color: var(--text-primary);
+    margin-bottom: 8px;
+    font-size: 1.05rem;
+}
+
+/* === Shortcuts Info === */
+.shortcuts-info {
+    background-color: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius);
+    padding: 16px;
+    margin-top: 16px;
+    font-size: 0.85rem;
+}
+
+.shortcuts-info h3 {
+    color: var(--accent);
+    margin-bottom: 8px;
+}
+
+.shortcuts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 6px;
+}
+
+.shortcut-item {
+    display: flex;
+    gap: 8px;
+}
+
+.shortcut-item kbd {
+    background-color: var(--bg-tertiary);
+    border: 1px solid var(--border-color);
+    border-radius: 3px;
+    padding: 2px 6px;
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    min-width: 80px;
+    text-align: center;
+}
+
+.shortcut-item span {
+    color: var(--text-secondary);
+}
+
+/* === Responsive === */
+@media (max-width: 768px) {
+    .app-header {
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .hex-toolbar {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .hex-toolbar .toolbar-group {
+        border-right: none;
+        border-bottom: 1px solid var(--border-color);
+        padding: 4px 0;
+    }
+
+    .map-config-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* === Scrollbar Styling === */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--bg-primary);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--border-color);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--bg-tertiary);
+}
