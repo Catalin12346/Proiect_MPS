@@ -113,6 +113,17 @@ const MapViewer = (() => {
     }
 
     /**
+     * Escape HTML special characters to prevent XSS.
+     * @param {string} text
+     * @returns {string}
+     */
+    function escapeHtml(text) {
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+    }
+
+    /**
      * Render the map as a color-coded table.
      */
     function render() {
@@ -130,12 +141,16 @@ const MapViewer = (() => {
             }
         }
 
-        let html = `<h3>${mapConfig.name}</h3>`;
+        const safeName = escapeHtml(mapConfig.name);
+        const safeUnit = escapeHtml(mapConfig.unit);
+        const safeDataType = escapeHtml(mapConfig.dataType);
+
+        let html = `<h3>${safeName}</h3>`;
         html += `<div class="map-info">`;
         html += `<span>Offset: 0x${mapConfig.offset.toString(16).toUpperCase()}</span>`;
         html += `<span>Dimensiune: ${mapConfig.rows}×${mapConfig.cols}</span>`;
-        html += `<span>Tip date: ${mapConfig.dataType}</span>`;
-        html += `<span>Min: ${displayValue(min).toFixed(2)}${mapConfig.unit} | Max: ${displayValue(max).toFixed(2)}${mapConfig.unit}</span>`;
+        html += `<span>Tip date: ${safeDataType}</span>`;
+        html += `<span>Min: ${displayValue(min).toFixed(2)}${safeUnit} | Max: ${displayValue(max).toFixed(2)}${safeUnit}</span>`;
         html += `</div>`;
 
         html += '<div class="map-table-wrapper"><table class="map-table"><thead><tr><th></th>';
@@ -157,7 +172,7 @@ const MapViewer = (() => {
 
                 html += `<td class="map-cell" style="background-color:${color};color:${textColor}" ` +
                     `data-row="${r}" data-col="${c}" data-offset="${byteOffset}" ` +
-                    `title="[${r},${c}] Offset: 0x${byteOffset.toString(16).toUpperCase()}\nRaw: ${rawVal}\nValoare: ${dispVal.toFixed(2)}${mapConfig.unit}">` +
+                    `title="[${r},${c}] Offset: 0x${byteOffset.toString(16).toUpperCase()}\nRaw: ${rawVal}\nValoare: ${dispVal.toFixed(2)}${safeUnit}">` +
                     `${dispVal.toFixed(mapConfig.multiplier === 1 && mapConfig.addend === 0 ? 0 : 2)}</td>`;
             }
             html += '</tr>';
@@ -165,9 +180,9 @@ const MapViewer = (() => {
         html += '</tbody></table></div>';
 
         html += '<div class="map-legend"><div class="legend-bar"></div>';
-        html += `<div class="legend-labels"><span>${displayValue(min).toFixed(2)}${mapConfig.unit}</span>`;
-        html += `<span>${displayValue((min + max) / 2).toFixed(2)}${mapConfig.unit}</span>`;
-        html += `<span>${displayValue(max).toFixed(2)}${mapConfig.unit}</span></div></div>`;
+        html += `<div class="legend-labels"><span>${displayValue(min).toFixed(2)}${safeUnit}</span>`;
+        html += `<span>${displayValue((min + max) / 2).toFixed(2)}${safeUnit}</span>`;
+        html += `<span>${displayValue(max).toFixed(2)}${safeUnit}</span></div></div>`;
 
         container.innerHTML = html;
 
